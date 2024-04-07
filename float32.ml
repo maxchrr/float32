@@ -122,3 +122,11 @@ let float32 (x : float) : string =
 
     msg ^ float_str ^ " (" ^ hex_str ^ ")"
 ;;
+
+let () =
+  if Array.length Sys.argv > 2 then
+    failwith "IEEE 754 : One number at a time."
+  else
+    print_string (float32 (float_of_string (Sys.argv.(1))));
+    print_newline ()
+;;
