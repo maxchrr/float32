@@ -13,17 +13,12 @@ All rights reserved.
 *)
 let rec split_string (str : string) : string list =
   let len = String.length str in
-  let rec split_helper acc index =
-    if index >= len then
-      acc
-    else
-      (* Soustrait un groupe de 4 caractère à partir de l'index courant *)
-      let group = String.sub str index 4 in
-      (* Appel récursif en ajoutant les groupes à la liste *)
-      split_helper (group :: acc) (index + 4)
-  in
-  (* Inversion pour obtenir l'ordre cohérent *)
-  List.rev (split_helper [] 0)
+  if len <= 4 then
+    [str]
+  else
+    let fst_group : string = String.sub str 0 4 in
+    let rest : string = String.sub str 4 (len - 4) in
+    fst_group :: split_string rest
 ;;
 
 (**
@@ -112,8 +107,12 @@ let rec exponents_bits_aux (x : float) (acc : int) : int =
 let exponent_bits (x : float) : int list =
   let bias : int = 127 in
   let exponent : int = exponents_bits_aux x 0 in
+  let bits : int list = int_to_binary (exponent + bias) in
 
-  int_to_binary (exponent + bias)
+  if List.length bits < 8 then
+    0 :: bits
+  else
+    bits
 ;;
 
 (**
