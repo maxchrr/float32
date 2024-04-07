@@ -100,7 +100,7 @@ let significand_bits (x : float) : int list =
 ;;
 
 let float32 (x : float) : string =
-  let msg : string = "IEEE 754 : FP32 \"" ^ string_of_float x ^ "\" -> " in
+  let msg : string = "IEEE 754: FP32 \"" ^ string_of_float x ^ "\" -> " in
 
   if Float.is_infinite x then
     if x > 0. then
@@ -125,7 +125,7 @@ let float32 (x : float) : string =
 
 let () =
   if Array.length Sys.argv > 2 then
-    failwith "IEEE 754 : One number at a time."
+    failwith "IEEE 754: One number at a time."
   else
     print_string (float32 (float_of_string (Sys.argv.(1))));
     print_newline ()
