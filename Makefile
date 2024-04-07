@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Max Charrier.
+# All rights reserved.
+
 CAMLC = ocamlc
 
 SRC = float32.ml

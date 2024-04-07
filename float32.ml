@@ -1,4 +1,9 @@
 (**
+Copyright (c) 2024 Max Charrier.
+All rights reserved.
+*)
+
+(**
   Divise une chaîne de caractère en groupe de 4 caractères.
   Nécessaire lors de la conversion en hexadécimal
 
