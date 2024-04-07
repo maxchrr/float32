@@ -1,3 +1,36 @@
+let rec split_string str =
+  let len = String.length str in
+  let rec split_helper acc index =
+    if index >= len then
+      acc
+    else
+      let group = String.sub str index 4 in
+      split_helper (group :: acc) (index + 4)
+  in
+  List.rev (split_helper [] 0)
+;;
+
+let bin_to_hex (bin : string) : char =
+  match bin with
+  | "0000" -> '0'
+  | "0001" -> '1'
+  | "0010" -> '2'
+  | "0011" -> '3'
+  | "0100" -> '4'
+  | "0101" -> '5'
+  | "0110" -> '6'
+  | "0111" -> '7'
+  | "1000" -> '8'
+  | "1001" -> '9'
+  | "1010" -> 'A'
+  | "1011" -> 'B'
+  | "1100" -> 'C'
+  | "1101" -> 'D'
+  | "1110" -> 'E'
+  | "1111" -> 'F'
+  | _ -> failwith "Entrée non valide pour une chaîne binaire"
+;;
+
 let sign_bit (x : float) : int =
   if x < 0. then 1 else 0
 ;;
@@ -83,5 +116,9 @@ let float32 (x : float) : string =
     in
     let float_str : string = String.concat "" (List.map string_of_int float) in
 
-    msg ^ float_str
+    let bin_groups : string list = split_string float_str in
+    let hex_list : char list = List.map bin_to_hex bin_groups in
+    let hex_str : string = String.of_seq (List.to_seq hex_list) in
+
+    msg ^ float_str ^ " (" ^ hex_str ^ ")"
 ;;
