@@ -1,5 +1,4 @@
 CAMLC = ocamlc
-CAMLDOC = ocamldoc
 
 SRC = float32.ml
 OBJ = $(SRC:.ml=.cmo)
