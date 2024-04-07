@@ -100,7 +100,7 @@ let significand_bits (x : float) : int list =
 ;;
 
 let float32 (x : float) : string =
-  let msg : string = "IEEE 754: FP32 \"" ^ string_of_float x ^ "\" -> " in
+  let msg : string = "IEEE 754: Encode FP32 \"" ^ string_of_float x ^ "\" -> " in
 
   if Float.is_infinite x then
     if x > 0. then
@@ -123,10 +123,29 @@ let float32 (x : float) : string =
     msg ^ float_str ^ " (" ^ hex_str ^ ")"
 ;;
 
+let float32_decoder (bits : string) : float =
+  let sign_bit = if bits.[0] = '1' then -1.0 else 1.0 in
+  let exponent = ref 0 in
+  for i = 1 to 8 do
+    exponent := !exponent * 2 + (int_of_char bits.[i] - int_of_char '0')
+  done;
+  let fraction = ref 0.0 in
+  for i = 9 to 31 do
+    fraction := !fraction +. float_of_int (int_of_char bits.[i] - int_of_char '0') *. (2.0 ** (-.float_of_int (i - 8)))
+  done;
+  sign_bit *. (2.0 ** (float_of_int (!exponent - 127))) *. (1.0 +. !fraction)
+;;
+
 let () =
-  if Array.length Sys.argv > 2 then
+  if Array.length Sys.argv > 3 then
     failwith "IEEE 754: One number at a time."
-  else
-    print_string (float32 (float_of_string (Sys.argv.(1))));
+  else if Sys.argv.(1) = "encode" then begin
+    print_string (float32 (float_of_string (Sys.argv.(2))));
     print_newline ()
+  end else if Sys.argv.(1) = "decode" then begin
+    print_string ("IEEE 754: Decode FP32 \"" ^ Sys.argv.(2) ^ "\" -> ");
+    print_float (float32_decoder Sys.argv.(2));
+    print_newline ()
+  end else
+    failwith "IEEE 754: Please use 'encode' or 'decode' command followed by your number."
 ;;
