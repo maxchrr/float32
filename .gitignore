@@ -1,2 +1,3 @@
 *.cm*
 bin
+.DS_Store
